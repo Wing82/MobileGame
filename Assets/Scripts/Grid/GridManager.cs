@@ -4,15 +4,16 @@ using UnityEngine;
 public class GridManager : MonoBehaviour
 {
     [Header("Grid Settings")]
-    [SerializeField] private int _row = 9;
-    [SerializeField] private int _column = 16;
-    [SerializeField] private float _tileSpacing = 0.5f;
+    [SerializeField] private int _rows = 7;
+    [SerializeField] private int _columns = 12;
+    [SerializeField] private float _hexSize = 1f;
 
+    [Header("Grid Position")]
+    [SerializeField] private Vector2 _gridOrigin = Vector2.zero; // Bottom-left corner of the grid
+    
     [SerializeField] private Tile _tilePrefab;
 
-    [SerializeField] private Transform cam;
-
-    private Dictionary<Vector2, Tile> _tiles;
+    private Dictionary<Vector2Int, Tile> _tiles;
 
     private void Start()
     {
@@ -21,32 +22,34 @@ public class GridManager : MonoBehaviour
 
     void GenerateGrid()
     {
-        _tiles = new Dictionary<Vector2, Tile>();
+        _tiles = new Dictionary<Vector2Int, Tile>();
 
-        Tile spawnedTile;
+        // Calculate hex geometry
+        float hexWidth = Mathf.Sqrt(3f) * _hexSize;
+        float hexHeight = 2f * _hexSize;
 
-        for (int x = 0; x < _row; x++)
+        float xSpacing = hexWidth * 0.75f; // horizontal distance between hex centers
+        float ySpacing = hexHeight * 0.5f; // vertical offset for odd columns
+
+        for (int x = 0; x < _rows; x++)
         {
-            for (int y = 0; y < _column; y++)
+            for (int y = 0; y < _columns; y++)
             {
-                float posX = x * _tileSpacing;
-                if (y % 2 == 0)
-                {
-                    posX += _tileSpacing / 2; // Offset every second row
-                    spawnedTile = Instantiate(_tilePrefab, new Vector3(posX, y), Quaternion.identity);
-                    spawnedTile.name = $"Tile {x} {y}"; // Naming the tile for easier identification
-                }
-                else
-                {
-                    posX -= _tileSpacing / 2;
-                    spawnedTile = Instantiate(_tilePrefab, new Vector3(x, y), Quaternion.identity);
-                    spawnedTile.name = $"Tile {x} {y}"; // Naming the tile for easier identification
-                }
+                // Base position from row/column
+                float posX = _gridOrigin.x + x * xSpacing;
+                float posY = _gridOrigin.y + y * hexHeight;
 
-                _tiles[new Vector2(x, y)] = spawnedTile;
+                // Offset odd columns down by half a hex
+                if (x % 2 == 1)
+                    posY += ySpacing;
+
+                Vector3 tilePos = new Vector3(posX, posY, 0);
+
+                Tile spawnedTile = Instantiate(_tilePrefab, tilePos, Quaternion.identity);
+                spawnedTile.name = $"Hex {x},{y}";
+
+                _tiles[new Vector2Int(x, y)] = spawnedTile;
             }
         }
-
-        //cam.transform.position = new Vector3((float)_row / 2 - 0.5f, (float)_column / 2 - 0.5f, -10);
     }
 }

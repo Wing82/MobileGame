@@ -202,7 +202,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 2.821, y: 6.267, z: 0}
-  m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 0}
@@ -287,11 +287,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 600ec24c2e89cea458d148f2bcb1d977, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _row: 6
-  _column: 10
-  _tileSpacing: 1
+  _rows: 7
+  _columns: 8
+  _hexSize: 1
+  _gridOrigin: {x: -3, y: -5}
   _tilePrefab: {fileID: 73878621117994916, guid: 4dfc2909d121f5543b4ff8e0481cab37, type: 3}
-  cam: {fileID: 519420032}
 --- !u!1 &519420028
 GameObject:
   m_ObjectHideFlags: 0
@@ -395,7 +395,7 @@ Camera:
     width: 1
     height: 1
   near clip plane: 0.3
-  far clip plane: 1000
+  far clip plane: 10
   field of view: 100
   orthographic: 1
   orthographic size: 8
@@ -615,6 +615,10 @@ PrefabInstance:
     - target: {fileID: 1601527391952982363, guid: 4dfc2909d121f5543b4ff8e0481cab37, type: 3}
       propertyPath: m_Name
       value: Tile
+      objectReference: {fileID: 0}
+    - target: {fileID: 1601527391952982363, guid: 4dfc2909d121f5543b4ff8e0481cab37, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
