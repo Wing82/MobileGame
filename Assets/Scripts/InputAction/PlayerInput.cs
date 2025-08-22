@@ -93,7 +93,7 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
             ""actions"": [
                 {
                     ""name"": ""Move"",
-                    ""type"": ""Value"",
+                    ""type"": ""PassThrough"",
                     ""id"": ""a606cca6-8280-4b53-ad4f-031b12411758"",
                     ""expectedControlType"": ""Vector2"",
                     ""processors"": """",
@@ -106,15 +106,15 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
                     ""id"": ""0373c20a-b720-4f42-a419-09f27e67b064"",
                     ""expectedControlType"": """",
                     ""processors"": """",
-                    ""interactions"": """",
+                    ""interactions"": ""Press"",
                     ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
                 {
                     ""name"": """",
-                    ""id"": ""5fb5637e-7eac-4af5-ab95-7e955e1913b7"",
-                    ""path"": ""<Keyboard>/space"",
+                    ""id"": ""2544dd23-4d46-4a16-8196-91035c31515a"",
+                    ""path"": ""<Touchscreen>/Press"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
@@ -123,59 +123,37 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
                     ""isPartOfComposite"": false
                 },
                 {
-                    ""name"": ""2D Vector"",
-                    ""id"": ""eb9b0445-817a-4aa2-8377-7a28635ebd12"",
-                    ""path"": ""2DVector"",
+                    ""name"": """",
+                    ""id"": ""5fb5637e-7eac-4af5-ab95-7e955e1913b7"",
+                    ""path"": ""<Mouse>/leftButton"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Move"",
-                    ""isComposite"": true,
+                    ""action"": ""Drop"",
+                    ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
                 {
-                    ""name"": ""up"",
-                    ""id"": ""595aa4aa-1b5a-49b4-8fcc-4d4781479b02"",
-                    ""path"": """",
-                    ""interactions"": """",
+                    ""name"": """",
+                    ""id"": ""47585bea-3027-462d-96b2-d9c66ba60b56"",
+                    ""path"": ""<Touchscreen>/primaryTouch/position"",
+                    ""interactions"": ""Hold"",
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""Move"",
                     ""isComposite"": false,
-                    ""isPartOfComposite"": true
+                    ""isPartOfComposite"": false
                 },
                 {
-                    ""name"": ""down"",
-                    ""id"": ""117c8f32-d01b-4bee-91e4-26cf62c3cea0"",
-                    ""path"": """",
+                    ""name"": """",
+                    ""id"": ""ceac403f-8aa4-460d-a9dc-b8fdb03b17a5"",
+                    ""path"": ""<Mouse>/position"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""Move"",
                     ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""left"",
-                    ""id"": ""44a1fe6c-2ace-4528-bd2e-1f92d2a0956c"",
-                    ""path"": """",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Move"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""right"",
-                    ""id"": ""24c81497-161b-410a-8ff2-cdc6520b1b2c"",
-                    ""path"": """",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Move"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
+                    ""isPartOfComposite"": false
                 }
             ]
         }

@@ -3,48 +3,54 @@ using UnityEngine;
 
 public class GridManager : MonoBehaviour
 {
-    [Header("Grid Settings")]
-    [SerializeField] private int _rows = 7;
-    [SerializeField] private int _columns = 12;
-    [SerializeField] private float _hexSize = 1f;
+    [Header("Hex Grid Settings")]
+    [SerializeField] private float _hexSize = 1f;  // Radius of hex (center to corner)
 
-    [Header("Grid Position")]
+    [Header("Grid Area")]
+    [SerializeField] private float _gridWidth = 10f;   // World units (X direction)
+    [SerializeField] private float _gridHeight = 10f;  // World units (Y direction)
     [SerializeField] private Vector2 _gridOrigin = Vector2.zero; // Bottom-left corner of the grid
-    
+
     [SerializeField] private Tile _tilePrefab;
 
     private Dictionary<Vector2Int, Tile> _tiles;
 
     private void Start()
     {
-        GenerateGrid();
+        GenerateHexGrid();
     }
 
-    void GenerateGrid()
+    void GenerateHexGrid()
     {
         _tiles = new Dictionary<Vector2Int, Tile>();
 
-        // Calculate hex geometry
+        // Hex geometry
         float hexWidth = Mathf.Sqrt(3f) * _hexSize;
         float hexHeight = 2f * _hexSize;
 
-        float xSpacing = hexWidth * 0.75f; // horizontal distance between hex centers
-        float ySpacing = hexHeight * 0.5f; // vertical offset for odd columns
+        float xSpacing = hexWidth * 0.75f;
+        float ySpacing = hexHeight * 0.5f;
 
-        for (int x = 0; x < _rows; x++)
+        // Calculate how many hexes fit into the given area
+        int maxCols = Mathf.FloorToInt(_gridWidth / xSpacing);
+        int maxRows = Mathf.FloorToInt(_gridHeight / hexHeight);
+
+        for (int x = 0; x < maxCols; x++)
         {
-            for (int y = 0; y < _columns; y++)
+            for (int y = 0; y < maxRows; y++)
             {
-                // Base position from row/column
                 float posX = _gridOrigin.x + x * xSpacing;
                 float posY = _gridOrigin.y + y * hexHeight;
 
-                // Offset odd columns down by half a hex
+                // Offset odd columns
                 if (x % 2 == 1)
                     posY += ySpacing;
 
-                Vector3 tilePos = new Vector3(posX, posY, 0);
+                // Don’t spawn outside defined rectangle
+                if (posX > _gridOrigin.x + _gridWidth || posY > _gridOrigin.y + _gridHeight)
+                    continue;
 
+                Vector3 tilePos = new Vector3(posX, posY, 0);
                 Tile spawnedTile = Instantiate(_tilePrefab, tilePos, Quaternion.identity);
                 spawnedTile.name = $"Hex {x},{y}";
 
