@@ -20,6 +20,7 @@ public class Ball : MonoBehaviour
     {
         if(collision.CompareTag("Score"))
         {
+            Destroy(collision.gameObject);
             _player.OnBallFinished();
         }
     }

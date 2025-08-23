@@ -42,5 +42,11 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
+  - name: PlayArea
+    uniqueID: 3290657629
+    locked: 0
+  - name: Background
+    uniqueID: 2381542049
+    locked: 0
   m_RenderingLayers:
   - Default
