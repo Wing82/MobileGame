@@ -3,6 +3,17 @@ using UnityEngine.InputSystem;
 
 public class Player : MonoBehaviour, PlayerInput.ICandyDropActions
 {
+    //add some gamestate enum to manage player states (spawning, dragging, released, finished)
+    public enum PlayerState
+    {
+        Spawning,
+        Dragging,
+        Released,
+        Finished
+    }
+
+    public PlayerState CurrentState { get; private set; } = PlayerState.Finished;
+
     [Header("Ball Prefab")]
     [SerializeField] private Ball _ballPrefab;
     public bool IsBallSpawned = false;
@@ -85,8 +96,23 @@ public class Player : MonoBehaviour, PlayerInput.ICandyDropActions
         }
     }
 
+    // change top object pool to spawn the ball //
     public void PlayerSpawn()
     {
+        //if gamestate is in release or dragging, do not spawn
+        if (CurrentState == PlayerState.Released || CurrentState == PlayerState.Dragging)
+        {
+            Debug.LogWarning("Cannot spawn while in Released or Dragging state.");
+            CurrentState = PlayerState.Finished;
+            return;
+        }
+
+        if (isDragging)
+        {
+            Debug.LogWarning("Cannot spawn while dragging.");
+            return;
+        }
+
         if (_ball != null)
         {
             Debug.LogWarning("Player already spawned.");
@@ -107,6 +133,9 @@ public class Player : MonoBehaviour, PlayerInput.ICandyDropActions
         Ball ballObject = Instantiate(_ballPrefab, spawnPosition, Quaternion.identity);
         ballObject.name = "Player";
 
+        //set gamestate to dragging
+        CurrentState = PlayerState.Dragging;
+
         rb = ballObject.GetComponent<Rigidbody2D>();
         rb.bodyType = RigidbodyType2D.Kinematic; // disable physics until released
 
@@ -121,6 +150,8 @@ public class Player : MonoBehaviour, PlayerInput.ICandyDropActions
             rb = _ball.GetComponent<Rigidbody2D>();
             rb.bodyType = RigidbodyType2D.Dynamic; // enable physics
             Debug.Log("Ball released!");
+            //set gamestate to released
+            CurrentState = PlayerState.Released;
         }
     }
 
