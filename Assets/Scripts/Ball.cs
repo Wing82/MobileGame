@@ -22,6 +22,7 @@ public class Ball : MonoBehaviour
         {
             Destroy(collision.gameObject);
             _player.OnBallFinished();
+            _player.CurrentState = Player.PlayerState.Finished;
         }
     }
 }
