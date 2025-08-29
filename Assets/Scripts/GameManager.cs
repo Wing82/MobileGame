@@ -7,35 +7,35 @@ public class GameManager : MonoBehaviour
     
     private static GameManager _instance;
     public static GameManager Instance => _instance;
-    public event Action<int> OnLifeValueChanged;
+    public event Action<int> OnBallsValueChanged;
     public event Action<int> OnScoreValueChanged;
 
     private MenuController currentMenuController;
 
     #region GAME PROPERTIES
-    [SerializeField] private int maxLives = 5;
-    private int _lives = 3;
+    [SerializeField] private int maxBalls = 10;
+    private int _balls = 5;
 
-    public int lives
+    public int balls
     {
-        get => _lives;
+        get => _balls;
         set
         {
             if (value <= 0)
             {
-                //GameOver();
+                GameOver();
                 return;
             }
 
-            if (_lives > value) //Respawn();
+            if (_balls > value) //Respawn();
 
-            _lives = value;
+            _balls = value;
 
-            if (_lives > maxLives) _lives = maxLives;
+            if (_balls > maxBalls) _balls = maxBalls;
 
-            OnLifeValueChanged?.Invoke(_lives);
+            OnBallsValueChanged?.Invoke(_balls);
 
-            Debug.Log($"{gameObject.name} lives has changed to {_lives}");
+            Debug.Log($"{gameObject.name} lives has changed to {_balls}");
         }
     }
 
@@ -68,17 +68,22 @@ public class GameManager : MonoBehaviour
         Destroy(gameObject);
     }
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    private void Start()
+    void Start()
     {
-        if (maxLives <= 0) maxLives = 5;
-        _lives = maxLives;
+        // Initialize game state if needed
     }
-
-    // Update is called once per frame
     void Update()
     {
-        
+        // Handle global input if needed
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            Application.Quit();
+        }
+    }
+    private void GameOver()
+    {
+        Debug.Log("Game Over!");
+        currentMenuController?.SetActiveState(MenuStates.GameOver);
     }
 
 }

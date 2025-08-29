@@ -6,15 +6,6 @@
             "id": "ce1736d8-ae36-4db5-880d-ac009b78104e",
             "actions": [
                 {
-                    "name": "Move",
-                    "type": "PassThrough",
-                    "id": "a606cca6-8280-4b53-ad4f-031b12411758",
-                    "expectedControlType": "Vector2",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": true
-                },
-                {
                     "name": "Drop",
                     "type": "Button",
                     "id": "0373c20a-b720-4f42-a419-09f27e67b064",
@@ -44,28 +35,6 @@
                     "processors": "",
                     "groups": "",
                     "action": "Drop",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "47585bea-3027-462d-96b2-d9c66ba60b56",
-                    "path": "<Touchscreen>/primaryTouch/position",
-                    "interactions": "Hold",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Move",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "ceac403f-8aa4-460d-a9dc-b8fdb03b17a5",
-                    "path": "<Mouse>/position",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Move",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

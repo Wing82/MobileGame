@@ -1,4 +1,4 @@
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.InputSystem;
 
 public class Player : MonoBehaviour, PlayerInput.ICandyDropActions
@@ -8,24 +8,23 @@ public class Player : MonoBehaviour, PlayerInput.ICandyDropActions
     {
         Spawning,
         Dragging,
-        Released,
+        Dropping,
         Finished
     }
 
     public PlayerState CurrentState { get; set; } = PlayerState.Spawning;
 
-    [Header("Ball Prefab")]
+    [Header("Ball Settings")]
     [SerializeField] private Ball _ballPrefab;
-    public bool IsBallSpawned = false;
+    private Ball _ball;
+    private Rigidbody2D rb;
 
     [Header("Play Area Collider")]
     [SerializeField] private BoxCollider2D _playAreaCollider;
 
     [Header("Player Settings")]
-    private Ball _ball;
     private PlayerInput input;
     private Camera mainCam;
-    private Rigidbody2D rb;
 
     private bool isDragging = false;
     private float fixedY; // lock Y position at spawn
@@ -35,9 +34,6 @@ public class Player : MonoBehaviour, PlayerInput.ICandyDropActions
     {
         _playAreaCollider = GameObject.Find("PlayArea").GetComponent<BoxCollider2D>();
         mainCam = Camera.main;
-
-
-        PlayerSpawn();
     }
 
     private void OnEnable()
@@ -53,18 +49,17 @@ public class Player : MonoBehaviour, PlayerInput.ICandyDropActions
         input.CandyDrop.RemoveCallbacks(this);
     }
 
-    public void OnMove(InputAction.CallbackContext context)
-    {
-
-    }
-
     public void OnDrop(InputAction.CallbackContext context)
     {
-        if (context.started) // finger down
+        if (context.started && _ball == null && CurrentState == PlayerState.Spawning) // finger touched
+        {
+            PlayerSpawn();
+        }
+        else if (context.performed && _ball != null && CurrentState == PlayerState.Dragging) // finger is moving
         {
             isDragging = true;
         }
-        else if (context.canceled) // finger released
+        else if (context.canceled && _ball != null && CurrentState == PlayerState.Dragging) // finger released
         {
             isDragging = false;
             ReleaseBall();
@@ -74,7 +69,7 @@ public class Player : MonoBehaviour, PlayerInput.ICandyDropActions
     // Update is called once per frame
     void Update()
     {
-        if (isDragging && _ball != null)
+        if (isDragging && _ball != null && CurrentState == PlayerState.Dragging)
         {
             // read position from touch or mouse
             Vector2 screenPos = Touchscreen.current != null && Touchscreen.current.press.isPressed
@@ -87,7 +82,6 @@ public class Player : MonoBehaviour, PlayerInput.ICandyDropActions
             worldPos.z = 0;
 
             // clamp inside play area
-            float halfWidth = _playAreaCollider.size.x / 2f;
             float leftLimit = _playAreaCollider.bounds.center.x - 2.5f;
             float rightLimit = _playAreaCollider.bounds.center.x + 2.5f;
 
@@ -100,63 +94,70 @@ public class Player : MonoBehaviour, PlayerInput.ICandyDropActions
     // change top object pool to spawn the ball //
     public void PlayerSpawn()
     {
-        Debug.Log($"Player State: " + CurrentState);
+        Debug.Log($"Player State: {CurrentState}");
 
-        if (_ball != null)
-            if (isDragging)
-                //if gamestate is in release or dragging, do not spawn
-                if (CurrentState == PlayerState.Released || CurrentState == PlayerState.Dragging)
-                {
-                    Debug.LogWarning("Cannot spawn while in Released or Dragging state.");
-                    return;
-                }
+        if (_ball != null) return; // already spawned
 
+        //if gamestate is in release, dragging or dropping, do not spawn
+        if (CurrentState == PlayerState.Dragging || CurrentState == PlayerState.Dropping)
+        {
+            Debug.LogWarning("Cannot spawn during Dragging, Released, or Dropping states.");
+            return;
+        }
 
+        // Set the player's position within the play area
+        Vector3 playAreaSize = _playAreaCollider.size;
+        Vector3 playAreaCenter = _playAreaCollider.bounds.center;
 
-            // Set the player's position within the play area
-            Vector3 playAreaSize = _playAreaCollider.size;
-            Vector3 playAreaCenter = _playAreaCollider.bounds.center;
+        Vector3 spawnPosition = new Vector3(_playAreaCollider.bounds.center.x, 6f, 0);
 
-            Vector3 spawnPosition = new Vector3(
-                playAreaCenter.x, // spawn in center X
-                6f, // near top
-                0
-            );
+        // Instantiate the player object
+        Ball ballObject = Instantiate(_ballPrefab, spawnPosition, Quaternion.identity);
+        ballObject.name = "Player";
+        ballObject.SetPlayer(this); // link back to player
 
-            // Instantiate the player object
-            Ball ballObject = Instantiate(_ballPrefab, spawnPosition, Quaternion.identity);
-            ballObject.name = "Player";
+        rb = ballObject.GetComponent<Rigidbody2D>();
+        rb.bodyType = RigidbodyType2D.Kinematic; // disable physics until released
 
+        _ball = ballObject;
+        fixedY = spawnPosition.y; // lock Y position at spawn
 
-            //set gamestate to dragging
-            CurrentState = PlayerState.Dragging;
-            Debug.Log($"Player State: " + CurrentState);
-
-            rb = ballObject.GetComponent<Rigidbody2D>();
-            rb.bodyType = RigidbodyType2D.Kinematic; // disable physics until released
-
-            _ball = ballObject;
-            fixedY = spawnPosition.y; // lock Y position at spawn
+        //set gamestate to dragging
+        CurrentState = PlayerState.Dragging;
+        Debug.Log($"Player State: {CurrentState}");
     }
 
     private void ReleaseBall()
     {
-        if (_ball != null)
+        if (_ball == null) return;
+
+        if (CurrentState == PlayerState.Dragging)
         {
-            rb = _ball.GetComponent<Rigidbody2D>();
             rb.bodyType = RigidbodyType2D.Dynamic; // enable physics
             rb.linearVelocity = Vector2.zero; // reset any existing velocity
             Debug.Log("Ball released!");
+
             //set gamestate to released
-            CurrentState = PlayerState.Released;
-            Debug.Log($"Player State: " + CurrentState);
+            CurrentState = PlayerState.Dropping;
+            Debug.Log($"Player State: {CurrentState}");
         }
     }
 
     // Call this when the ball reaches the bottom or is destroyed
     public void OnBallFinished()
     {
-        //PlayerSpawn(); // auto-spawn next one
-        Debug.Log($"Player State: " + CurrentState);
+        _ball = null;
+        rb = null;
+
+        CurrentState = PlayerState.Finished;
+        Debug.Log($"Player State: {CurrentState}");
+
+        Invoke(nameof(ResetForNextSpawn), 1f); // respawn after 1 second
+    }
+
+    private void ResetForNextSpawn()
+    {
+        CurrentState = PlayerState.Spawning;
+        Debug.Log($"Player State: {CurrentState}");
     }
 }

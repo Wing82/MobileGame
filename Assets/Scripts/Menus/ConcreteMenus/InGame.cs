@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class InGame : BaseMenu
 {
-    public TMP_Text livesText;
+    public TMP_Text ballsText;
     public TMP_Text scoreText;
 
     public override void Init(MenuController context)
@@ -11,10 +11,9 @@ public class InGame : BaseMenu
         base.Init(context);
         state = MenuStates.InGame;
 
-        livesText.text = $"Lives: {GameManager.Instance.lives}";
+        ballsText.text = $"Balls: {GameManager.Instance.balls}";
 
-        GameManager.Instance.OnLifeValueChanged += LifeValueChanged;
-        //GameManager.Instance.SetMenuController(context);
+        GameManager.Instance.OnBallsValueChanged += BallValueChanged;
 
         scoreText.text = $"Score: {GameManager.Instance.score}";
 
@@ -23,11 +22,11 @@ public class InGame : BaseMenu
 
     private void ScoreValueChanged(int value) => scoreText.text = $"Score: {value}";
 
-    private void LifeValueChanged(int value) => livesText.text = $"Lives: {value}";
+    private void BallValueChanged(int value) => ballsText.text = $"Balls: {value}";
 
     private void OnDestroy()
     {
-        GameManager.Instance.OnLifeValueChanged -= LifeValueChanged;
+        GameManager.Instance.OnBallsValueChanged -= BallValueChanged;
         GameManager.Instance.OnScoreValueChanged -= ScoreValueChanged;
     }
 }

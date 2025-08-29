@@ -237,7 +237,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   state: 0
-  livesText: {fileID: 1719299414}
+  ballsText: {fileID: 1719299414}
   scoreText: {fileID: 67394625}
 --- !u!82 &48578060
 AudioSource:
@@ -1177,7 +1177,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _ballPrefab: {fileID: 4265431263621411592, guid: 98089be30819b8249beacfc3240e9f31, type: 3}
-  IsBallSpawned: 0
   _playAreaCollider: {fileID: 827288004}
 --- !u!4 &931477653
 Transform:
@@ -1202,6 +1201,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1997477909656333471, guid: dd67631c49fc2b546a5f38b1075fc1d3, type: 3}
+      propertyPath: maxBalls
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 1997477909656333471, guid: dd67631c49fc2b546a5f38b1075fc1d3, type: 3}
+      propertyPath: maxLives
+      value: 5
+      objectReference: {fileID: 0}
     - target: {fileID: 5473408410880077573, guid: dd67631c49fc2b546a5f38b1075fc1d3, type: 3}
       propertyPath: m_LocalPosition.x
       value: 258.85745
@@ -1658,7 +1665,7 @@ GameObject:
   - component: {fileID: 1719299415}
   - component: {fileID: 1719299414}
   m_Layer: 5
-  m_Name: LivesTxt
+  m_Name: BallsTxt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1703,7 +1710,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'Lives: -1
+  m_text: 'Balls: -1
 
 '
   m_isRightToLeft: 0

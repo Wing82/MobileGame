@@ -2,27 +2,23 @@ using UnityEngine;
 
 public class Ball : MonoBehaviour
 {
-    Player _player;
+    private Player _player;
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    public void SetPlayer(Player player)
     {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
+        _player = player;
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if(collision.CompareTag("Score"))
         {
-            Destroy(collision.gameObject);
+            Debug.Log("Ball hit Score area");
+
             _player.OnBallFinished();
-            _player.CurrentState = Player.PlayerState.Finished;
+            Destroy(gameObject);
+            GameManager.Instance.balls--;
+            GameManager.Instance.score += 10;
         }
     }
 }

@@ -92,15 +92,6 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
             ""id"": ""ce1736d8-ae36-4db5-880d-ac009b78104e"",
             ""actions"": [
                 {
-                    ""name"": ""Move"",
-                    ""type"": ""PassThrough"",
-                    ""id"": ""a606cca6-8280-4b53-ad4f-031b12411758"",
-                    ""expectedControlType"": ""Vector2"",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": true
-                },
-                {
                     ""name"": ""Drop"",
                     ""type"": ""Button"",
                     ""id"": ""0373c20a-b720-4f42-a419-09f27e67b064"",
@@ -132,28 +123,6 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
                     ""action"": ""Drop"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""47585bea-3027-462d-96b2-d9c66ba60b56"",
-                    ""path"": ""<Touchscreen>/primaryTouch/position"",
-                    ""interactions"": ""Hold"",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Move"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""ceac403f-8aa4-460d-a9dc-b8fdb03b17a5"",
-                    ""path"": ""<Mouse>/position"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Move"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -162,7 +131,6 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
 }");
         // CandyDrop
         m_CandyDrop = asset.FindActionMap("CandyDrop", throwIfNotFound: true);
-        m_CandyDrop_Move = m_CandyDrop.FindAction("Move", throwIfNotFound: true);
         m_CandyDrop_Drop = m_CandyDrop.FindAction("Drop", throwIfNotFound: true);
     }
 
@@ -244,7 +212,6 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
     // CandyDrop
     private readonly InputActionMap m_CandyDrop;
     private List<ICandyDropActions> m_CandyDropActionsCallbackInterfaces = new List<ICandyDropActions>();
-    private readonly InputAction m_CandyDrop_Move;
     private readonly InputAction m_CandyDrop_Drop;
     /// <summary>
     /// Provides access to input actions defined in input action map "CandyDrop".
@@ -257,10 +224,6 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
         /// Construct a new instance of the input action map wrapper class.
         /// </summary>
         public CandyDropActions(@PlayerInput wrapper) { m_Wrapper = wrapper; }
-        /// <summary>
-        /// Provides access to the underlying input action "CandyDrop/Move".
-        /// </summary>
-        public InputAction @Move => m_Wrapper.m_CandyDrop_Move;
         /// <summary>
         /// Provides access to the underlying input action "CandyDrop/Drop".
         /// </summary>
@@ -291,9 +254,6 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
         {
             if (instance == null || m_Wrapper.m_CandyDropActionsCallbackInterfaces.Contains(instance)) return;
             m_Wrapper.m_CandyDropActionsCallbackInterfaces.Add(instance);
-            @Move.started += instance.OnMove;
-            @Move.performed += instance.OnMove;
-            @Move.canceled += instance.OnMove;
             @Drop.started += instance.OnDrop;
             @Drop.performed += instance.OnDrop;
             @Drop.canceled += instance.OnDrop;
@@ -308,9 +268,6 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
         /// <seealso cref="CandyDropActions" />
         private void UnregisterCallbacks(ICandyDropActions instance)
         {
-            @Move.started -= instance.OnMove;
-            @Move.performed -= instance.OnMove;
-            @Move.canceled -= instance.OnMove;
             @Drop.started -= instance.OnDrop;
             @Drop.performed -= instance.OnDrop;
             @Drop.canceled -= instance.OnDrop;
@@ -354,13 +311,6 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
     /// <seealso cref="CandyDropActions.RemoveCallbacks(ICandyDropActions)" />
     public interface ICandyDropActions
     {
-        /// <summary>
-        /// Method invoked when associated input action "Move" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
-        /// </summary>
-        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
-        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
-        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
-        void OnMove(InputAction.CallbackContext context);
         /// <summary>
         /// Method invoked when associated input action "Drop" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
         /// </summary>
