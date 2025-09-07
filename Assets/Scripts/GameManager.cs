@@ -24,6 +24,7 @@ public class GameManager : MonoBehaviour
             if (value <= 0)
             {
                 GameOver();
+                _balls = 0;
                 return;
             }
 
