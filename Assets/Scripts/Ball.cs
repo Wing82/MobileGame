@@ -18,11 +18,11 @@ public class Ball : MonoBehaviour
             transform.position = new Vector3(2.64f, transform.position.y, transform.position.z);
         }
 
-        if (transform.position.x < -2.64f)
+        if (transform.position.x < -2.45f)
         {
             // Out of bounds
             Debug.Log("Ball out of bounds");
-            transform.position = new Vector3(-2.64f, transform.position.y, transform.position.z);
+            transform.position = new Vector3(-2.45f, transform.position.y, transform.position.z);
         }
     }
 

@@ -113,7 +113,7 @@ public class Player : MonoBehaviour, PlayerInput.ICandyDropActions
 
         // Instantiate the player object
         Ball ballObject = Instantiate(_ballPrefab, spawnPosition, Quaternion.identity);
-        ballObject.name = "Player";
+        ballObject.name = "Ball";
         ballObject.SetPlayer(this); // link back to player
 
         rb = ballObject.GetComponent<Rigidbody2D>();
