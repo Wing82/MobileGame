@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 [DefaultExecutionOrder(-1)]
 public class GameManager : MonoBehaviour
@@ -21,16 +22,16 @@ public class GameManager : MonoBehaviour
         get => _balls;
         set
         {
-            if (value <= 0)
-            {
-                GameOver();
-                _balls = 0;
-                return;
-            }
-
-            if (_balls > value) //Respawn();
 
             _balls = value;
+
+            if (value <= 0)
+            {
+                _balls = 0;
+                GameOver();
+            }
+
+            //if (_balls > value) //Respawn();
 
             if (_balls > maxBalls) _balls = maxBalls;
 
@@ -81,10 +82,10 @@ public class GameManager : MonoBehaviour
             Application.Quit();
         }
     }
-    private void GameOver()
+    void GameOver()
     {
         Debug.Log("Game Over!");
-        currentMenuController?.SetActiveState(MenuStates.GameOver);
+        SceneManager.LoadScene("GameOver");
     }
 
 }

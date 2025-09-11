@@ -1,0 +1,11 @@
+<engine:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:engine="UnityEngine.UIElements" xmlns:editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <engine:TabView tabindex="0" focusable="false" style="top: 150px; left: 50px; justify-content: flex-end; font-size: 30px;">
+        <engine:Tab label="123" style="width: 62px;">
+            <engine:Label text="Content&#10;2" />
+        </engine:Tab>
+        <engine:Tab label="2334" tabindex="1" focusable="false" style="width: 64px;">
+            <engine:Label text="Label" />
+        </engine:Tab>
+        <engine:Tab label="345" tabindex="2" />
+    </engine:TabView>
+</engine:UXML>

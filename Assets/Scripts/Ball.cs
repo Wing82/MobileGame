@@ -28,7 +28,12 @@ public class Ball : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if(collision.CompareTag("Score"))
+        if(GameManager.Instance.balls <= 0)
+        {
+            GameManager.Instance.balls = 0;
+            return;
+        }
+        if (collision.CompareTag("OneScore"))
         {
             Debug.Log("Ball hit Score area");
 
@@ -36,6 +41,26 @@ public class Ball : MonoBehaviour
             Destroy(gameObject);
             GameManager.Instance.balls--;
             GameManager.Instance.score += 10;
+        }
+
+        if (collision.CompareTag("TwoScore"))
+        {
+            Debug.Log("Ball hit Score area");
+
+            _player.OnBallFinished();
+            Destroy(gameObject);
+            GameManager.Instance.balls--;
+            GameManager.Instance.score += 20;
+        }
+
+        if (collision.CompareTag("FiveScore"))
+        {
+            Debug.Log("Ball hit Score area");
+
+            _player.OnBallFinished();
+            Destroy(gameObject);
+            GameManager.Instance.balls--;
+            GameManager.Instance.score += 50;
         }
     }
 

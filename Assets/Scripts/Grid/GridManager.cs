@@ -34,7 +34,11 @@ public class GridManager : MonoBehaviour
         // Calculate how many hexes fit into the given area
         int maxCols = Mathf.FloorToInt(_gridWidth / xSpacing);
         int maxRows = Mathf.FloorToInt(_gridHeight / hexHeight);
+        
+        // Adjust rows for odd columns
+        maxRows += maxCols / 2;
 
+        // Spawn hex tiles
         for (int x = 0; x < maxCols; x++)
         {
             for (int y = 0; y < maxRows; y++)
